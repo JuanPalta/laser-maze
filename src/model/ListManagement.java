@@ -16,7 +16,7 @@ public class ListManagement {
 			lastList = list;
 			endLastList = list;
 			charColumn = 'B';
-			longitud = 1;	
+			longitud = 1;
 		}
 
 		public List getFirstList() {
@@ -27,7 +27,7 @@ public class ListManagement {
 			this.firstList = firstList;
 		}
 		
-		public void add(int row, int column,int mirrors) {
+		public void add(int row, int column) {
 			List l = new List(row,charColumn);
 			if(column > 1) {
 				endFirstList.setNextList(l);
@@ -36,9 +36,22 @@ public class ListManagement {
 				endFirstList = l;
 				longitud++;
 				charColumn++;
-				add(row,(column-1),mirrors);
+				add(row,(column-1));
+			}	
+		}
+		
+		public List search(int row,int column,List temp) {
+			
+			if(row>1) {
+				temp = temp.getDownList();
+				return search(row-1,column,temp);
+				}
+			else if(column > 1){
+				temp = temp.getNextList();
+				return search(row,column-1,temp);
 			}
-				
+			return temp;
+			
 		}
 
 		public List getEndLastList() {

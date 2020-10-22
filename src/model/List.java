@@ -13,6 +13,7 @@ public class List {
 	public List(int row, char charColumn) {
 		this.column = charColumn;
 		this.row = row;
+		mirror ='n';
 	}
 
 	public char getColumn() {

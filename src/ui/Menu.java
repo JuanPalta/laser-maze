@@ -1,5 +1,6 @@
 package ui;
 import model.*;
+import java.util.Random;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,21 +20,21 @@ public class Menu {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(principalMenu);
 		play();
-		//System.out.println(square.getLastList().getRow());
-		
 	}
 	
-	public void play() throws IOException {
+	private void play() throws IOException {
 		System.out.println("INSERT NICKNAME|ROW|COLUMNS|NUMBER OF MIRROR");
 		String[] data = br.readLine().split(" ");
 		int iteration = Integer.parseInt(data[1]) * Integer.parseInt(data[2]);
 		if(Integer.parseInt(data[2])<26 && Integer.parseInt(data[3])<=iteration) {	
-		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]), Integer.parseInt(data[3]),countRows);
+		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]),countRows);
+		putMirrors(Integer.parseInt(data[3]));
+		//System.out.println(square.search(3, 3, square.getFirstList()).getColumn());
 		}
 		
 	}
 	
-	public void linkWithOtherList(List list , List otherList) {
+	private void linkWithOtherList(List list , List otherList) {
 			
 		if(list != null && otherList != null) {
 			list.setDownList(otherList);
@@ -43,20 +44,45 @@ public class Menu {
 		
 	}
 	
-	public void createList(int row, int column, int mirrors,int countRows) {
+	private void createList(int row, int column,int countRows) {
 		if(countRows == 1) {
-			square.add(countRows, column, mirrors);
-			createList(row,column,mirrors,countRows+1);
+			square.add(countRows, column);
+			createList(row,column,countRows+1);
 		}
 		else if(countRows<= row && countRows > 1) {
 			ListManagement temp = new ListManagement(countRows);
-			temp.add(countRows,column,mirrors);
+			temp.add(countRows,column);
 			linkWithOtherList(temporal.getFirstList(),temp.getFirstList());
 			temporal = temp;
 			square.setLastList(temp.getFirstList());
 			square.setEndLastList(temp.getEndFirstList());
-			createList(row,column,mirrors,countRows+1);
+			createList(row,column,countRows+1);
 		}
 	}
+	
+	private void putMirrors(int mirrors) {
+	
+			Random r = new Random();
+			char rc = (char) (r.nextInt(square.getEndFirstList().getColumn()-('A'-1)) + 'A');
+			int rr = 1 + r.nextInt(square.getLastList().getRow());
+			int rs = 1 + r.nextInt(2);
+			char slash = ' ';
+			int countColumn = (rc - 'A' + 1);
+			List searched = square.search(rr, countColumn,square.getFirstList());
+			if (mirrors>=1 && searched.getMirror() == 'n'){
+				if(rs == 1) {
+					slash = 47; 
+				 }
+				 else{
+				    slash = 92;
+				 }
+				 searched.setMirror(slash);
+				 putMirrors(mirrors-1);	
+			}
+			else if(searched.getMirror() != 'n' && mirrors>=1){
+				putMirrors(mirrors);
+			}
+			}
 
 }
+
