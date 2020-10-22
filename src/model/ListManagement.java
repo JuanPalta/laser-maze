@@ -9,8 +9,8 @@ public class ListManagement {
 		private char charColumn;
 		private int longitud;
 		
-		public ListManagement() {
-			List list = new List(1,'A');
+		public ListManagement(int row) {
+			List list = new List(row,'A');
 			firstList = list;
 			endFirstList = list;
 			lastList = list;
@@ -30,10 +30,10 @@ public class ListManagement {
 		public void add(int row, int column,int mirrors) {
 			List l = new List(row,charColumn);
 			if(column > 1) {
-				endLastList.setNextList(l);
+				endFirstList.setNextList(l);
 				l.setPrevList(endLastList);
-				endLastList.setPrevList(l.getPrevList().getPrevList());
-				endLastList = l;
+				endFirstList.setPrevList(l.getPrevList().getPrevList());
+				endFirstList = l;
 				longitud++;
 				charColumn++;
 				add(row,(column-1),mirrors);
@@ -59,5 +59,13 @@ public class ListManagement {
 
 		public void setLongitud(int longitud) {
 			this.longitud = longitud;
+		}
+		
+		public void setLastList(List lastList) {
+			this.lastList = lastList;
+		}
+		
+		public void setEndLastList(List endLastList) {
+			this.endLastList = endLastList;
 		}
 }

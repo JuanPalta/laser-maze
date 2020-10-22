@@ -12,14 +12,14 @@ public class Menu {
 	static final int EXIT = 3;
 	static int countRows = 1;
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
-	ListManagement square = new ListManagement();
+	ListManagement square = new ListManagement(1);
 	ListManagement temporal = square;
 	
 	public void showMenu() throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(principalMenu);
 		play();
-		//System.out.println(square.getFirstList().getNextList().getNextList().getRow());
+		//System.out.println(square.getLastList().getRow());
 		
 	}
 	
@@ -49,10 +49,12 @@ public class Menu {
 			createList(row,column,mirrors,countRows+1);
 		}
 		else if(countRows<= row && countRows > 1) {
-			ListManagement temp = new ListManagement();
+			ListManagement temp = new ListManagement(countRows);
 			temp.add(countRows,column,mirrors);
 			linkWithOtherList(temporal.getFirstList(),temp.getFirstList());
 			temporal = temp;
+			square.setLastList(temp.getFirstList());
+			square.setEndLastList(temp.getEndFirstList());
 			createList(row,column,mirrors,countRows+1);
 		}
 	}
