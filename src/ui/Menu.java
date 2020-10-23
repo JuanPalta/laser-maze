@@ -26,10 +26,10 @@ public class Menu {
 		System.out.println("INSERT NICKNAME|ROW|COLUMNS|NUMBER OF MIRROR");
 		String[] data = br.readLine().split(" ");
 		int iteration = Integer.parseInt(data[1]) * Integer.parseInt(data[2]);
-		if(Integer.parseInt(data[2])<26 && Integer.parseInt(data[3])<=iteration) {	
+		if(Integer.parseInt(data[2])<=26 && Integer.parseInt(data[3])<=iteration) {	
 		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]),countRows);
 		putMirrors(Integer.parseInt(data[3]));
-		//System.out.println(square.search(3, 3, square.getFirstList()).getColumn());
+		square.showContent(Integer.parseInt(data[1]),Integer.parseInt(data[2]),square.getFirstList());
 		}
 		
 	}
@@ -69,7 +69,7 @@ public class Menu {
 			char slash = ' ';
 			int countColumn = (rc - 'A' + 1);
 			List searched = square.search(rr, countColumn,square.getFirstList());
-			if (mirrors>=1 && searched.getMirror() == 'n'){
+			if (mirrors>=1 && searched.getMirror() == ' '){
 				if(rs == 1) {
 					slash = 47; 
 				 }
@@ -79,7 +79,7 @@ public class Menu {
 				 searched.setMirror(slash);
 				 putMirrors(mirrors-1);	
 			}
-			else if(searched.getMirror() != 'n' && mirrors>=1){
+			else if(searched.getMirror() != ' ' && mirrors>=1){
 				putMirrors(mirrors);
 			}
 			}

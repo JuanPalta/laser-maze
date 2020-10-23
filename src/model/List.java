@@ -5,6 +5,7 @@ public class List {
 	private char mirror;
 	private char column;
 	private int row;
+	private String content;
 	private List prevList;
 	private List nextList;
 	private List downList;
@@ -13,7 +14,8 @@ public class List {
 	public List(int row, char charColumn) {
 		this.column = charColumn;
 		this.row = row;
-		mirror ='n';
+		mirror =' ';
+		setContent("[]");
 	}
 
 	public char getColumn() {
@@ -70,6 +72,14 @@ public class List {
 
 	public void setMirror(char mirror) {
 		this.mirror = mirror;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

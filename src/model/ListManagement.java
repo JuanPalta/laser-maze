@@ -46,13 +46,39 @@ public class ListManagement {
 				temp = temp.getDownList();
 				return search(row-1,column,temp);
 				}
-			else if(column > 1){
+			else if(column >1){
 				temp = temp.getNextList();
 				return search(row,column-1,temp);
 			}
 			return temp;
 			
 		}
+		
+		private void showColumns(int column,List temp) {
+			if(column >1){
+				System.out.print(temp.getContent());
+				if(temp.getNextList() != null) {
+					temp = temp.getNextList();
+					showColumns(column--,temp);
+			}
+			}
+		}
+		
+		public void showContent(int row, int column, List temp) {
+			
+			if(row>=1) {
+				
+				showColumns(column,temp);
+				System.out.println();
+				if(temp.getDownList()  != null) {
+				temp = temp.getDownList();
+				showContent(row--,column,temp);
+				}
+			}
+			
+		}
+			
+		
 
 		public List getEndLastList() {
 			return endLastList;
