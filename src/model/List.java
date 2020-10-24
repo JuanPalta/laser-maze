@@ -6,6 +6,7 @@ public class List {
 	private char column;
 	private int row;
 	private String content;
+	private boolean found;
 	private List prevList;
 	private List nextList;
 	private List downList;
@@ -80,6 +81,14 @@ public class List {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public boolean getFound() {
+		return found;
+	}
+
+	public void setFound(boolean found) {
+		this.found = found;
 	}
 
 }

@@ -30,6 +30,7 @@ public class Menu {
 		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]),countRows);
 		putMirrors(Integer.parseInt(data[3]));
 		square.showContent(Integer.parseInt(data[1]),Integer.parseInt(data[2]),square.getFirstList());
+		
 		}
 		
 	}
@@ -61,7 +62,6 @@ public class Menu {
 	}
 	
 	private void putMirrors(int mirrors) {
-	
 			Random r = new Random();
 			char rc = (char) (r.nextInt(square.getEndFirstList().getColumn()-('A'-1)) + 'A');
 			int rr = 1 + r.nextInt(square.getLastList().getRow());
