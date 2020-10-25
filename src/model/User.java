@@ -7,6 +7,7 @@ public class User {
 	
 	public User(String nickname) {
 		this.setNickname(nickname);
+		score = 0;
 	}
 
 	public String getNickname() {
