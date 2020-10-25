@@ -158,12 +158,13 @@ public class ListManagement {
 		}
 		
 		public List shootLaser(List start) {
+			
 		    if(start != firstList && start != endFirstList && start!=lastList && start != endLastList) {
 		    	
 		    	if(start.getColumn()  == 'A') {
 		    	    start =  goRight(start);
 		    	}
-		    	else if(start.getRow() == '1') {
+		    	else if(start.getRow() == 1) {
 		    		start = goDown(start);
 		    	}
 		    	else if(start.getRow() == endLastList.getRow()) {
@@ -176,6 +177,7 @@ public class ListManagement {
 		    }
 		    return start;
 		}
+		
 		
 		public List shootLaserCorner(List start,char direction) {
 			if(direction == 'H') {

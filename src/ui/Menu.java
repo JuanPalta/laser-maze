@@ -12,6 +12,7 @@ public class Menu {
 	static final int SHOW_POSITIONS = 2;
 	static final int EXIT = 3;
 	static int countRows = 1;
+	static int countMirrors;
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
 	ListManagement square = new ListManagement(1);
 	ListManagement temporal = square;
@@ -19,18 +20,19 @@ public class Menu {
 	public void showMenu() throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(principalMenu);
-		play();
+		creationTable();
+		playu(countMirrors);
 	}
 	
-	private void play() throws IOException {
+	private void creationTable() throws IOException {
 		System.out.println("INSERT NICKNAME|ROW|COLUMNS|NUMBER OF MIRROR");
 		String[] data = br.readLine().split(" ");
 		int iteration = Integer.parseInt(data[1]) * Integer.parseInt(data[2]);
 		if(Integer.parseInt(data[2])<=26 && Integer.parseInt(data[3])<=iteration) {	
 		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]),countRows);
 		putMirrors(Integer.parseInt(data[3]));
+		countMirrors = Integer.parseInt(data[3]);
 		square.showContent(Integer.parseInt(data[1]),Integer.parseInt(data[2]),square.getFirstList());
-		
 		}
 		
 	}
@@ -83,6 +85,92 @@ public class Menu {
 				putMirrors(mirrors);
 			}
 			}
+	
+	private void showStartAndEnd(List s,List e) {
+		System.out.println();
+		s.setContent("[S]");
+		e.setContent("[E]");
+		square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+		if(s.getFound() == false) {
+			s.setContent("[ ]");	
+		}
+		if(e.getFound() == false) {
+			e.setContent("[ ]");
+		}
+		if(s.getFound() == true) {
+			s.setContent("[" + s.getMirror() + "]");
+		}
+		if(e.getFound() == true) {
+			e.setContent("[" + e.getMirror() + "]");
+		}
+	}
+	
+	private void locate(List s,char mirror) throws IOException {
+		System.out.println();
+		if(s.getMirror() == mirror && s.getFound() == false) {
+			s.setFound(true);
+			s.setContent("[" + mirror + "]");
+			square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+			playu(countMirrors--);
+		}else if(s.getFound() == false){
+			s.setContent("[X]");
+			square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+			s.setContent("[ ]");
+			System.out.println();
+			square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+			playu(countMirrors);
+		}
+	}
+	
+	private void play(String command) throws IOException {
+		int row;
+		char column;
+		List start;
+		List end;
+		if(command.length() == 2) {
+			row = Character.getNumericValue(command.charAt(0));
+			column = command.charAt(1);
+			start = square.search(row, (column - 'A' + 1),square.getFirstList());
+			end = square.shootLaser(start);
+			showStartAndEnd(start,end);
+			playu(countMirrors);
+		}
+		else if(command.length() == 3 && command.charAt(2) == 'H' || command.charAt(2) == 'V') {
+			row = Character.getNumericValue(command.charAt(0));
+			column = command.charAt(1);
+			char direction = command.charAt(2);
+			start = square.search(row, column - 'A' + 1, square.getFirstList());
+			end = square.shootLaserCorner(start,direction);
+			showStartAndEnd(start,end);
+			playu(countMirrors);
+		}
+		else if(command.length() == 4 && command.charAt(0) == 'L'){
+			row = Character.getNumericValue(command.charAt(1));
+			column = command.charAt(2);
+			start = square.search(row, (column - 'A' + 1),square.getFirstList());
+			if(command.charAt(3) == 'R') {
+			locate(start,(char)92);
+			}
+			else if(command.charAt(3) == 'L') {
+			locate(start,'/');
+			}
+		}
+	}
+	
+	private void playu(int countMirrors) throws IOException {
+		String location = br.readLine();
+		if(location.equals("menu")) {
+			showMenu();
+		}
+		else {
+			if(countMirrors>=1) {
+				System.out.println(countMirrors);
+				play(location);	
+			}
+			
+		}
+		
+	}
 
 }
 

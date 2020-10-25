@@ -16,7 +16,7 @@ public class List {
 		this.column = charColumn;
 		this.row = row;
 		mirror =' ';
-		setContent("[]");
+		setContent("[ ]");
 	}
 
 	public char getColumn() {
