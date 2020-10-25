@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.BorderException;
+import exceptions.CornerException;
+
 public class ListManagement {
 
 		private List firstList;
@@ -157,7 +160,7 @@ public class ListManagement {
 				
 		}
 		
-		public List shootLaser(List start) {
+		public List shootLaser(List start) throws BorderException {
 			
 		    if(start != firstList && start != endFirstList && start!=lastList && start != endLastList) {
 		    	
@@ -175,11 +178,14 @@ public class ListManagement {
 		    		start = goLeft(start);
 		    	}
 		    }
+		    else {
+		    	throw new BorderException();
+		    }
 		    return start;
 		}
 		
 		
-		public List shootLaserCorner(List start,char direction) {
+		public List shootLaserCorner(List start,char direction) throws CornerException{
 			if(direction == 'H') {
 				if(start == firstList || start == lastList) {
 					start = goRight(start);
@@ -195,6 +201,9 @@ public class ListManagement {
 				else if(start == lastList || start == endLastList) {
 					start = goUp(start);
 				}
+			}
+			else{
+				throw new CornerException();
 			}
 			return start;
 		}

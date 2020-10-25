@@ -1,6 +1,11 @@
 package ui;
 import model.*;
 import java.util.Random;
+
+import exceptions.BorderException;
+import exceptions.CornerException;
+import exceptions.NoRequerimentsException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,17 +20,38 @@ public class Menu {
 	static int countMirrors;
 	private User user;
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
-	ListManagement square = new ListManagement(1);
-	ListManagement temporal = square;
+	ListManagement square;
+	ListManagement temporal;
 	
 	public void showMenu() throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
+		square = new ListManagement(1);
+		temporal = square;
 		System.out.println(principalMenu);
-		creationTable();
-		playOption(countMirrors);
+		int option = Integer.parseInt(br.readLine());
+		switch(option) {
+		case PLAY:
+			try {
+				creationTable();
+				playOption(countMirrors);
+			} catch (IOException | NoRequerimentsException e) {
+				e.printStackTrace();
+			}
+			break;
+		case SHOW_POSITIONS:
+			
+			break;
+			
+		case EXIT:
+			System.out.println("THANKS FOR PLAY, SEE YOU LATER");
+			break;
+		default:
+			System.err.println("INSERT A VALID OPTION");
+			showMenu();
+		}
 	}
 	
-	private void creationTable() throws IOException {
+	private void creationTable() throws IOException, NoRequerimentsException{
 		System.out.println("INSERT NICKNAME|ROW|COLUMNS|NUMBER OF MIRROR");
 		String[] data = br.readLine().split(" ");
 		int iteration = Integer.parseInt(data[1]) * Integer.parseInt(data[2]);
@@ -35,6 +61,9 @@ public class Menu {
 		countMirrors = Integer.parseInt(data[3]);
 		user = new User(data[0]);
 		square.showContent(Integer.parseInt(data[1]),Integer.parseInt(data[2]),square.getFirstList());
+		}
+		else {
+			throw new NoRequerimentsException();
 		}
 		
 	}
@@ -138,16 +167,27 @@ public class Menu {
 			row = Character.getNumericValue(command.charAt(0));
 			column = command.charAt(1);
 			start = square.search(row, (column - 'A' + 1),square.getFirstList());
-			end = square.shootLaser(start);
-			showStartAndEnd(start,end);
+			try {
+				end = square.shootLaser(start);
+				showStartAndEnd(start,end);
+			} catch (BorderException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		else if(command.length() == 3 && command.charAt(2) == 'H' || command.charAt(2) == 'V') {
+		else if(command.length() == 3) {
 			row = Character.getNumericValue(command.charAt(0));
 			column = command.charAt(1);
 			char direction = command.charAt(2);
 			start = square.search(row, column - 'A' + 1, square.getFirstList());
-			end = square.shootLaserCorner(start,direction);
-			showStartAndEnd(start,end);
+			try {
+				end = square.shootLaserCorner(start,direction);
+				showStartAndEnd(start,end);
+			} catch (CornerException e) {
+				
+				e.printStackTrace();
+			}
+			
 		}
 		else if(command.length() == 4 && command.charAt(0) == 'L'){
 			row = Character.getNumericValue(command.charAt(1));
@@ -163,14 +203,19 @@ public class Menu {
 	}
 	
 	private void playOption(int countMirrors) throws IOException {
+		if(countMirrors>0) {
 		String location = br.readLine();
 		if(location.equals("menu")) {
 			showMenu();
 		}
 		else {
-			if(countMirrors>0) {
 				play(location);
-			}
+		}
+		}
+		else {
+			System.out.println("YOU WIN CONGRATULATIONS!!!");
+			System.out.println();
+			showMenu();
 		}
 	}
 }
