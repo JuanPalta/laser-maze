@@ -19,6 +19,7 @@ public class Menu {
 	static int countRows = 1;
 	static int countMirrors;
 	private User user;
+	private UserManagement positions = new UserManagement();
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
 	ListManagement square;
 	ListManagement temporal;
@@ -34,12 +35,16 @@ public class Menu {
 			try {
 				creationTable();
 				playOption(countMirrors);
-			} catch (IOException | NoRequerimentsException e) {
-				e.printStackTrace();
+			} catch (IOException | NoRequerimentsException nr) {
+				nr.printStackTrace();
 			}
 			break;
 		case SHOW_POSITIONS:
-			
+			System.out.println();
+			System.out.println("PLAYER|ROWS|COLUMNS|MIRRORS|SCORE");
+			positions.inOrder(positions.getRoot());
+			System.out.println();
+			showMenu();
 			break;
 			
 		case EXIT:
@@ -59,7 +64,9 @@ public class Menu {
 		createList(Integer.parseInt(data[1]),Integer.parseInt(data[2]),countRows);
 		putMirrors(Integer.parseInt(data[3]));
 		countMirrors = Integer.parseInt(data[3]);
-		user = new User(data[0]);
+		int s = ((Integer.parseInt(data[1]) + Integer.parseInt(data[2]))*Integer.parseInt(data[3])) * 1000;
+		System.out.println(s);
+		user = new User(data[0],s,Integer.parseInt(data[1]),Integer.parseInt(data[2]),Integer.parseInt(data[3]));
 		square.showContent(Integer.parseInt(data[1]),Integer.parseInt(data[2]),square.getFirstList());
 		}
 		else {
@@ -135,6 +142,7 @@ public class Menu {
 		if(e.getFound() == true) {
 			e.setContent("[" + e.getMirror() + "]");
 		}
+		user.setScore((user.getScore()-50));
 		playOption(countMirrors);
 	}
 	
@@ -146,6 +154,7 @@ public class Menu {
 			countMirrors = countMirrors-1;
 			System.out.println(user.getNickname() + ":" + " " + countMirrors + " mirrors remaining");
 			square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+			user.setScore((user.getScore()+2000));
 			playOption(countMirrors);
 		}else if(s.getFound() == false){
 			s.setContent("[X]");
@@ -154,6 +163,7 @@ public class Menu {
 			System.out.println();
 			System.out.println(user.getNickname() + ":" + " " + countMirrors + " mirrors remaining");
 			square.showContent(square.getFirstList().getRow(), square.getEndLastList().getColumn() - 'A' + 1, square.getFirstList());
+			user.setScore((user.getScore()-1000));
 			playOption(countMirrors);
 		}
 	}
@@ -170,9 +180,10 @@ public class Menu {
 			try {
 				end = square.shootLaser(start);
 				showStartAndEnd(start,end);
-			} catch (BorderException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (BorderException be) {
+				be.printStackTrace();
+			} catch(CornerException ce) {
+				ce.printStackTrace();
 			}
 		}
 		else if(command.length() == 3) {
@@ -183,9 +194,9 @@ public class Menu {
 			try {
 				end = square.shootLaserCorner(start,direction);
 				showStartAndEnd(start,end);
-			} catch (CornerException e) {
+			} catch (CornerException ce) {
 				
-				e.printStackTrace();
+				ce.printStackTrace();
 			}
 			
 		}
@@ -206,6 +217,9 @@ public class Menu {
 		if(countMirrors>0) {
 		String location = br.readLine();
 		if(location.equals("menu")) {
+			System.out.println("FINAL SCORE: " + user.getScore());
+			positions.addUser(user);
+			System.out.println();
 			showMenu();
 		}
 		else {
@@ -214,6 +228,8 @@ public class Menu {
 		}
 		else {
 			System.out.println("YOU WIN CONGRATULATIONS!!!");
+			System.out.println("FINAL SCORE: " + user.getScore());
+			positions.addUser(user);
 			System.out.println();
 			showMenu();
 		}

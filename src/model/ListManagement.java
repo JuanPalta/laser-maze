@@ -160,7 +160,7 @@ public class ListManagement {
 				
 		}
 		
-		public List shootLaser(List start) throws BorderException {
+		public List shootLaser(List start) throws BorderException, CornerException {
 			
 		    if(start != firstList && start != endFirstList && start!=lastList && start != endLastList) {
 		    	
@@ -177,9 +177,12 @@ public class ListManagement {
 		    	else if(start.getColumn() == endFirstList.getColumn()) {
 		    		start = goLeft(start);
 		    	}
+		    	else {
+				    	throw new BorderException();
+				 }
 		    }
 		    else {
-		    	throw new BorderException();
+		    	throw new CornerException();
 		    }
 		    return start;
 		}
