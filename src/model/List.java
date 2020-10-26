@@ -1,7 +1,7 @@
 package model;
 
 public class List {
-	
+
 	private char mirror;
 	private char column;
 	private int row;
@@ -11,11 +11,11 @@ public class List {
 	private List nextList;
 	private List downList;
 	private List upList;
-	
+
 	public List(int row, char charColumn) {
 		this.column = charColumn;
 		this.row = row;
-		mirror =' ';
+		mirror = ' ';
 		setContent("[ ]");
 	}
 

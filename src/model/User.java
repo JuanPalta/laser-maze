@@ -1,7 +1,13 @@
 package model;
 
-public class User {
-	
+import java.io.Serializable;
+
+public class User implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nickname;
 	private int score;
 	private int row;
@@ -10,8 +16,8 @@ public class User {
 	private User left;
 	private User right;
 	private User parent;
-	
-	public User(String nickname, int score ,int row, int column, int mirror) {
+
+	public User(String nickname, int score, int row, int column, int mirror) {
 		this.setNickname(nickname);
 		this.score = score;
 		this.row = row;
@@ -82,7 +88,7 @@ public class User {
 	public void setParent(User parent) {
 		this.parent = parent;
 	}
-	
+
 	public String getData() {
 		String n = nickname + " " + row + " " + column + " " + mirror + " " + score;
 		return n;
