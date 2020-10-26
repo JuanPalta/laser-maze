@@ -19,7 +19,7 @@ public class Menu {
 	static int countRows = 1;
 	static int countMirrors;
 	private User user;
-	private UserManagement positions = new UserManagement();
+	private UserManagement table = new UserManagement();
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
 	ListManagement square;
 	ListManagement temporal;
@@ -41,8 +41,9 @@ public class Menu {
 			break;
 		case SHOW_POSITIONS:
 			System.out.println();
-			System.out.println("PLAYER|ROWS|COLUMNS|MIRRORS|SCORE");
-			positions.inOrder(positions.getRoot());
+			System.out.println("POSITION|PLAYER|ROWS|COLUMNS|MIRRORS|SCORE");
+			table.inOrder(table.getRoot());
+			table.restartLongitud();
 			System.out.println();
 			showMenu();
 			break;
@@ -218,7 +219,7 @@ public class Menu {
 		String location = br.readLine();
 		if(location.equals("menu")) {
 			System.out.println("FINAL SCORE: " + user.getScore());
-			positions.addUser(user);
+			table.addUser(user);
 			System.out.println();
 			showMenu();
 		}
@@ -229,7 +230,7 @@ public class Menu {
 		else {
 			System.out.println("YOU WIN CONGRATULATIONS!!!");
 			System.out.println("FINAL SCORE: " + user.getScore());
-			positions.addUser(user);
+			table.addUser(user);
 			System.out.println();
 			showMenu();
 		}

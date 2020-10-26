@@ -2,9 +2,10 @@ package model;
 
 public class UserManagement {
 	private User root;
-	
+	private int positions;
 	public UserManagement() {
 		root = null;
+		positions = 0;
 	}
 	
 	public void addUser(User u) {
@@ -38,14 +39,20 @@ public class UserManagement {
 	}
 	
 	public void inOrder(User x) {
-		if(x!= null) {
-		  inOrder(x.getLeft());
-		  System.out.println(x.getData());
-		  inOrder(x.getRight());
+		if(x != null) {
+			  inOrder(x.getLeft());
+			  positions++;
+			  System.out.println(positions + "." + x.getData());
+			  inOrder(x.getRight());
 		}
+		
 	}
 	
 	public User getRoot() {
 		return root;
+	}
+	
+	public void restartLongitud() {
+		positions = 0;
 	}
 }
