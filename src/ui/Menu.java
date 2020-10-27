@@ -28,8 +28,8 @@ public class Menu {
 	private User user;
 	private UserManagement table;
 	static final String principalMenu = "WELCOME TO THE LASER-MAZE GAME \n1:PLAY \n2:TABLE OF POSITIONS \n3:EXIT";
-	ListManagement square;
-	ListManagement temporal;
+	private ListManagement square;
+	private ListManagement temporal;
 	
 	/**
 	 * The constructor of Menu Class
@@ -249,9 +249,10 @@ public class Menu {
 		char column;
 		List start;
 		List end;
-		if (command.length() == 2) {
-			row = Character.getNumericValue(command.charAt(0));
-			column = command.charAt(1);
+		char lastChar = command.charAt(command.length()-1);
+		if (lastChar != 'R' && lastChar != 'L' && lastChar != 'H' && lastChar != 'V') {
+			row = Integer.parseInt(command.substring(0,command.length()-1));
+			column = command.charAt(command.length()-1);
 			start = square.search(row, (column - 'A' + 1), square.getFirstList());
 			try {
 				end = square.shootLaser(start);
@@ -261,10 +262,10 @@ public class Menu {
 			} catch (CornerException ce) {
 				ce.printStackTrace();
 			}
-		} else if (command.length() == 3) {
-			row = Character.getNumericValue(command.charAt(0));
-			column = command.charAt(1);
-			char direction = command.charAt(2);
+		} else if (lastChar == 'H' || lastChar == 'V') {
+			row = Integer.parseInt(command.substring(0,command.length()-2));
+			column = command.charAt(command.length()-2);
+			char direction = command.charAt(command.length()-1);
 			start = square.search(row, column - 'A' + 1, square.getFirstList());
 			try {
 				end = square.shootLaserCorner(start, direction);
@@ -274,13 +275,13 @@ public class Menu {
 				ce.printStackTrace();
 			}
 
-		} else if (command.length() == 4 && command.charAt(0) == 'L') {
-			row = Character.getNumericValue(command.charAt(1));
-			column = command.charAt(2);
+		} else if (command.charAt(0) == 'L') {
+			row = Integer.parseInt(command.substring(1,command.length()-2));
+			column = command.charAt(command.length()-2);
 			start = square.search(row, (column - 'A' + 1), square.getFirstList());
-			if (command.charAt(3) == 'R') {
+			if (command.charAt(command.length()-1) == 'R') {
 				locate(start, (char) 92);
-			} else if (command.charAt(3) == 'L') {
+			} else if (command.charAt(command.length()-1) == 'L') {
 				locate(start, '/');
 			}
 		}
